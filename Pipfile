@@ -1,0 +1,22 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+bs4 = "*"
+requests = "*"
+python-dateutil = "*"
+tweepy = "*"
+
+[dev-packages]
+pycodestyle = "*"
+types-python-dateutil = "*"
+mypy = "*"
+black = "*"
+
+[requires]
+python_version = "3.9"
+
+[pipenv]
+allow_prereleases = true

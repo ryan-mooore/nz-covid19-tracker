@@ -1,0 +1,22 @@
+{
+    "last_updated": "2021-08-19T23:59:00",
+    "posted": {
+        "vaccination_update": true,
+        "daily_vaccinations": true,
+        "doses_update": true
+    },
+    "data": {
+        "vaccines": {
+            "Vaccinations yesterday": {
+                "First dose administered": 21291,
+                "Second dose administered": 8626,
+                "Total doses administered": 29917
+            },
+            "Cumulative total": {
+                "First dose administered": 1677813,
+                "Second dose administered": 963219,
+                "Total doses administered": 2641032
+            }
+        }
+    }
+}
