@@ -4,16 +4,17 @@ from json import dumps, loads
 from bs4 import BeautifulSoup  # type: ignore
 from dateutil import parser as dparser
 from requests import get as rqget  # type: ignore
+from helpers.connection import db  # type: ignore
 
 parser = ArgumentParser()
 parser.add_argument("--dev", action="store_true")
 args = parser.parse_args()
 
+scrape_tables = db.scrape_tables.find_one()
+covid_data = db.covid_data.find_one()
+tweets = db.tweet_status.find_one()
 
-tables = loads(open("src/data/tables.json", "r").read())
-status = loads(open("src/data/status.json", "r").read())
-
-for page_name, page in tables["pages"].items():
+for page_name, page in scrape_tables["tables"].items():
     soup = BeautifulSoup(
         rqget(
             f"https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-data-and-statistics/{page['url']}",
@@ -29,17 +30,17 @@ for page_name, page in tables["pages"].items():
     if args.dev:
         print("Skipping data check, dev environment")
     # check data has actually been updated
-    elif date.isoformat() == status["pages"][page_name]["last_updated"]:
+    elif date.isoformat() == covid_data["covid_data"][page_name]["last_updated"]:
         print("No date update, aborting")
         continue
 
     # set new date and set posted flags to false
     print(
-        f"Updated {page_name} data: {status['pages'][page_name]['last_updated']} => {date.isoformat()}"
+        f"Updated {page_name} data: {tweets['tweets'][page_name]['updated']} => {date.isoformat()}"
     )
-    status["pages"][page_name]["last_updated"] = date.isoformat()
-    for posted in status["tweeted"][page_name].values():
-        posted = False
+    tweets["tweets"][page_name]["updated"] = date.isoformat()
+    for posted in tweets["tweets"][page_name]["tweeted"]:
+        tweets["tweets"][page_name]["tweeted"][posted] = False
 
     for header, tables in page["headers"].items():
 
@@ -50,7 +51,7 @@ for page_name, page in tables["pages"].items():
             table = header.find_next(text=table_header).parent.parent
 
             # format to json
-            status["pages"][page_name][header] = {
+            covid_data["covid_data"][page_name][header] = {
                 header.text: {
                     row.find_all(["th", "td"])[0].text: int(
                         row.find_all(["th", "td"])[index].text
@@ -59,7 +60,8 @@ for page_name, page in tables["pages"].items():
                 }
                 for index, header in enumerate(table.thead.find_all("th")[1:], start=1)
             }
-        print(f"Scraping {header}")
+    print(f"Scraping {header}")
 
-open("src/data/status.json", "w").write(dumps(status))
+db.covid_data.update_one({"_id": covid_data["_id"]}, {"$set": covid_data})
+db.tweet_status.update_one({"_id": tweets["_id"]}, {"$set": tweets})
 print("Update complete.")
