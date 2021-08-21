@@ -34,7 +34,7 @@ for tweet_type, scripts in data["tweeted"].items():
                 break
 
             print(f"Tweeted: \n{status}")
-            # api.update_status(status)
+            api.update_status(status)
             break
     else:
         continue
