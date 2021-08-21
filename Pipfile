@@ -8,6 +8,7 @@ bs4 = "*"
 requests = "*"
 python-dateutil = "*"
 tweepy = "*"
+pymongo = "*"
 
 [dev-packages]
 pycodestyle = "*"

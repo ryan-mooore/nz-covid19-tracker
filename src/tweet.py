@@ -6,14 +6,17 @@ from typing import Type
 import tweepy as tp  # type: ignore
 from importlib import import_module
 
+from helpers.connection import db  # type: ignore
+
 auth = tp.OAuthHandler(environ["CONSUMER_KEY"], environ["CONSUMER_SECRET"])
 auth.set_access_token(environ["ACCESS_TOKEN"], environ["ACCESS_TOKEN_SECRET"])
 api = tp.API(auth)
 
-data = loads(open("src/data/status.json", "r").read())
+tweets = db.tweet_status.find_one()
+covid_data = db.covid_data.find_one()
 
-for tweet_type, scripts in data["tweeted"].items():
-    for script, tweeted in scripts.items():
+for name, tweet_type in tweets["tweets"].items():
+    for script, tweeted in tweet_type["tweeted"].items():
         if script == argv[1]:
             if tweeted:
                 print(
@@ -21,12 +24,12 @@ for tweet_type, scripts in data["tweeted"].items():
                 )
                 break
             else:
-                data["tweeted"][tweet_type][script] = True
+                tweets["tweets"][name]["tweeted"][script] = True
             print(f"Tweeting {script}...")
             try:
                 status = "\n".join(
-                    import_module(".".join(["tweets", tweet_type, script])).tweet(
-                        data["pages"]
+                    import_module(".".join(["tweets", name, script])).tweet(
+                        covid_data["covid_data"]
                     )
                 )
             except TypeError:
@@ -42,4 +45,4 @@ for tweet_type, scripts in data["tweeted"].items():
 else:
     print(f"Tweet {argv[1]} could not be found in status.json")
 
-open("src/data/status.json", "w").write(dumps(data))
+db.tweet_status.update_one({"_id": tweets["_id"]}, {"$set": tweets})
