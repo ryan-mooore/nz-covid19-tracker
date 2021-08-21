@@ -1,0 +1,25 @@
+{
+    "pages": {
+        "COVID-19: Current cases": {
+            "url": "covid-19-current-cases",
+            "headers": {
+                "Current situation": [
+                    "All case outcomes since first New Zealand case"
+                ],
+                "Case details": [
+                    "Number of active cases",
+                    "Location of active cases",
+                    "Source of active cases"
+                ]
+            }
+        },
+        "COVID-19: Vaccine data": {
+            "url": "covid-19-vaccine-data",
+            "headers": {
+                "COVID-19 vaccinations: daily updates": [
+                    "Total Vaccinations"
+                ]
+            }
+        }
+    }
+}

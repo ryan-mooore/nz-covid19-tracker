@@ -5,12 +5,27 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: Current File",
+            "name": "Tweet",
             "type": "python",
             "request": "launch",
-            "program": "${file}",
+            "program": "${workspaceFolder}/src/tweet.py",
+            "console": "integratedTerminal",
+            "args": ["${input:tweet}"]
+        },
+        {
+            "name": "Scrape",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/scrape.py",
             "console": "integratedTerminal",
             "args": ["--dev"]
+        }
+    ],
+    "inputs": [
+        {
+            "id": "tweet",
+            "description": "Select tweet to push",
+            "type": "promptString"
         }
     ]
 }
