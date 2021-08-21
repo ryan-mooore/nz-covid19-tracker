@@ -30,7 +30,7 @@ for page_name, page in scrape_tables["tables"].items():
     if args.dev:
         print("Skipping data check, dev environment")
     # check data has actually been updated
-    elif date.isoformat() == covid_data["covid_data"][page_name]["last_updated"]:
+    elif date.isoformat() == covid_data["covid_data"][page_name]["updated"]:
         print("No date update, aborting")
         continue
 
