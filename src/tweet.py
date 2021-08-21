@@ -2,6 +2,7 @@ from json import loads, dumps
 from os import environ
 from datetime import datetime
 from sys import argv
+from typing import Type
 import tweepy as tp  # type: ignore
 from importlib import import_module
 
@@ -18,18 +19,27 @@ for tweet_type, scripts in data["tweeted"].items():
                 print(
                     f"Tried to tweet {script} but already tweeted since last data update."
                 )
-                continue
+                break
             else:
-                tweeted = True
+                data["tweeted"][tweet_type][script] = True
             print(f"Tweeting {script}...")
-            status = "\n".join(
-                import_module(".".join(["tweets", tweet_type, script])).tweet(
-                    data["pages"]
+            try:
+                status = "\n".join(
+                    import_module(".".join(["tweets", tweet_type, script])).tweet(
+                        data["pages"]
+                    )
                 )
-            )
+            except TypeError:
+                print(f"Aborted tweeting {script}...")
+                break
 
             print(f"Tweeted: \n{status}")
-            api.update_status(status)
+            # api.update_status(status)
             break
+    else:
+        continue
+    break
+else:
+    print(f"Tweet {argv[1]} could not be found in status.json")
 
 open("src/data/status.json", "w").write(dumps(data))
