@@ -25,7 +25,7 @@ def tweet(data: dict) -> Union[bool, list[str]]:
         )
     if totals["Caught COVID-19 from someone locally"] < 0:
         total_str.append(
-            f'🏡 From the community: -{totals["Caught COVID-19 from someone locally"]}',
+            f'🏡 In the community: -{totals["Caught COVID-19 from someone locally"]}',
         )
     if (
         totals["Caught COVID-19 within NZ, but source is unknown"]
