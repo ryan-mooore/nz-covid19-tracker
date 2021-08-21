@@ -22,7 +22,9 @@ def tweet(data: dict) -> list[str]:
         totals["Caught COVID-19 within NZ, but source is unknown"]
         + totals["Under investigation"]
     ):
-        f'🔎 Under investigation: {totals["Caught COVID-19 within NZ, but source is unknown"] + totals["Under investigation"]}',
+        total_str.append(
+            f'🔎 Under investigation: {totals["Caught COVID-19 within NZ, but source is unknown"] + totals["Under investigation"]}',
+        )
 
     return [
         "🦠 CASES UPDATE",

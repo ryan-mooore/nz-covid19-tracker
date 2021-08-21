@@ -49,9 +49,9 @@
     },
     "tweeted": {
         "COVID-19: Vaccine data": {
-            "vaccination_update": false,
-            "daily_vaccinations": false,
-            "doses_update": false
+            "vaccination_update": true,
+            "daily_vaccinations": true,
+            "doses_update": true
         },
         "COVID-19: Current cases": {
             "recovery_update": false,
