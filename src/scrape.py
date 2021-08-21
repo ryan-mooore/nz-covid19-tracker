@@ -38,8 +38,8 @@ for page_name, page in tables["pages"].items():
         f"Updated {page_name} data: {status['pages'][page_name]['last_updated']} => {date.isoformat()}"
     )
     status["pages"][page_name]["last_updated"] = date.isoformat()
-    for posted in status["tweeted"][page_name].values():
-        posted = False
+    for posted in status["tweeted"][page_name]:
+        status["tweeted"][page_name][posted] = False
 
     for header, tables in page["headers"].items():
 
