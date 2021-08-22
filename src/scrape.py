@@ -1,6 +1,7 @@
 from argparse import ArgumentParser
 from json import dumps, loads
 from collections import defaultdict
+from pydoc import pager
 from bs4 import BeautifulSoup  # type: ignore
 from dateutil import parser as dparser
 from requests import get as rqget  # type: ignore
@@ -35,7 +36,9 @@ for page_name, page in scrape_tables["tables"].items():
         continue
     else:
         # set new history
-        covid_data["covid_data"]["history"] = covid_data["covid_data"]["pages"]
+        covid_data["covid_data"]["history"][page_name] = covid_data["covid_data"][
+            "pages"
+        ][page_name]
 
     # set new date and set posted flags to false
     print(
