@@ -5,7 +5,7 @@ def tweet(data: dict) -> list[str]:
 
     NZ_POP = 5122600
     vaccinated = int(
-        data["COVID-19: Vaccine data"]["COVID-19 vaccinations: daily updates"][
+        data["pages"]["COVID-19: Vaccine data"]["COVID-19 vaccinations: daily updates"][
             "Cumulative total"
         ]["Second dose administered"]
     )

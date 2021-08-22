@@ -1,6 +1,6 @@
 from argparse import ArgumentParser
 from json import dumps, loads
-
+from collections import defaultdict
 from bs4 import BeautifulSoup  # type: ignore
 from dateutil import parser as dparser
 from requests import get as rqget  # type: ignore
@@ -33,6 +33,9 @@ for page_name, page in scrape_tables["tables"].items():
     elif date.isoformat() == tweets["tweets"][page_name]["updated"]:
         print("No date update, aborting")
         continue
+    else:
+        # set new history
+        covid_data["covid_data"]["history"] = covid_data["covid_data"]["pages"]
 
     # set new date and set posted flags to false
     print(
@@ -51,7 +54,7 @@ for page_name, page in scrape_tables["tables"].items():
             table = header.find_next(text=table_header).parent.parent
 
             # format to json
-            covid_data["covid_data"][page_name][header] = {
+            covid_data["covid_data"]["pages"][page_name][header] = {
                 header.text: {
                     row.find_all(["th", "td"])[0].text: int(
                         row.find_all(["th", "td"])[index].text
@@ -62,6 +65,6 @@ for page_name, page in scrape_tables["tables"].items():
             }
     print(f"Scraping {header}")
 
-db.covid_data.update_one({"_id": covid_data["_id"]}, {"$set": covid_data})
-db.tweet_status.update_one({"_id": tweets["_id"]}, {"$set": tweets})
+db.covid_data.update_one({"_id": covid_data["_id"]}, {"$set": covid_data}, upsert=True)
+db.tweet_status.update_one({"_id": tweets["_id"]}, {"$set": tweets}, upsert=True)
 print("Update complete.")

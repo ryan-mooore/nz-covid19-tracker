@@ -10,7 +10,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/src/tweet.py",
             "console": "integratedTerminal",
-            "args": ["${input:tweet}"]
+            "args": ["${input:tweet}", "--dev"]
         },
         {
             "name": "Scrape",

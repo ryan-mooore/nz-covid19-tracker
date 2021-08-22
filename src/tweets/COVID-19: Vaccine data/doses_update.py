@@ -1,18 +1,17 @@
 from math import floor, ceil
+from re import A
 
 
 def tweet(data: dict) -> list[str]:
     NZ_POP = 5122600
 
-    only_first = data["COVID-19: Vaccine data"]["COVID-19 vaccinations: daily updates"][
-        "Cumulative total"
-    ]["First dose administered"]
-    any_dose = data["COVID-19: Vaccine data"]["COVID-19 vaccinations: daily updates"][
-        "Cumulative total"
-    ]["Total doses administered"]
-    vaccinated = data["COVID-19: Vaccine data"]["COVID-19 vaccinations: daily updates"][
-        "Cumulative total"
-    ]["Second dose administered"]
+    vaccinations = data["pages"]["COVID-19: Vaccine data"][
+        "COVID-19 vaccinations: daily updates"
+    ]["Cumulative total"]
+
+    only_first = vaccinations["First dose administered"]
+    any_dose = vaccinations["Total doses administered"]
+    vaccinated = vaccinations["Second dose administered"]
 
     tiles = "🟨" * floor(vaccinated / NZ_POP * 25) + "⬜" * (
         floor(any_dose / NZ_POP * 25) - floor(vaccinated / NZ_POP * 25)
