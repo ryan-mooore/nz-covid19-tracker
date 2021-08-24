@@ -19,19 +19,6 @@ def tweet(data: dict) -> Union[bool, list[str]]:
         "🦠 RECOVERY UPDATE",
         str(recovered)
         + (" people have " if recovered > 1 else " person has ")
-        + "been infected from COVID-19 in the past 24 hours, bringing the total active cases to "
+        + "recovered from COVID-19 in the past 24 hours, bringing the total active cases to "
         + str(active),
     ]
-
-    if border + community + unknown == recovered:
-        return [
-            "🦠 RECOVERY UPDATE",
-            str(recovered)
-            + (" people have " if recovered > 1 else " person has ")
-            + "recovered from COVID-19 in the past 24 hours, bringing the total active cases to "
-            + str(active)
-            + ":",
-        ] + total_str
-    else:
-        print("Error: recovery number did not equal current - history")
-        return False
