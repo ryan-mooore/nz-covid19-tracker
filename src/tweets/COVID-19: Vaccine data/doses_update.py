@@ -5,7 +5,7 @@ from re import A
 def tweet(data: dict) -> list[str]:
     NZ_POP = 5122600
 
-    vaccinations = data["pages"]["COVID-19: Vaccine data"][
+    vaccinations = data["COVID-19: Vaccine data"][
         "COVID-19 vaccinations: daily updates"
     ]["Cumulative total"]
 

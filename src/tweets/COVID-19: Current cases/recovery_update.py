@@ -3,7 +3,7 @@ from typing import Union
 
 def tweet(data: dict) -> Union[bool, list[str]]:
 
-    recovered = data["pages"]["COVID-19: Current cases"]["Current situation"][
+    recovered = data["COVID-19: Current cases"]["Current situation"][
         "Change in last 24 hours"
     ]["Recovered"]
 
@@ -11,9 +11,7 @@ def tweet(data: dict) -> Union[bool, list[str]]:
         print("No new active cases in past 24 hours")
         return False
 
-    active = data["pages"]["COVID-19: Current cases"]["Current situation"]["Total"][
-        "Active"
-    ]
+    active = data["COVID-19: Current cases"]["Current situation"]["Total"]["Active"]
 
     return [
         "🦠 RECOVERY UPDATE",

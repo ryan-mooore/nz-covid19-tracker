@@ -1,8 +1,6 @@
 def tweet(data: dict) -> list[str]:
 
-    totals = data["pages"]["COVID-19: Current cases"]["Case details"][
-        "Total at present"
-    ]
+    totals = data["COVID-19: Current cases"]["Case details"]["Total at present"]
 
     border = (
         totals[
@@ -32,5 +30,5 @@ def tweet(data: dict) -> list[str]:
 
     return [
         "🦠 CASES UPDATE",
-        f'There are currently {data["pages"]["COVID-19: Current cases"]["Current situation"]["Total"]["Active"]} active cases of COVID-19 in New Zealand:',
+        f'There are currently {data["COVID-19: Current cases"]["Current situation"]["Total"]["Active"]} active cases of COVID-19 in New Zealand:',
     ] + total_str

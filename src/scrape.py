@@ -6,6 +6,9 @@ from bs4 import BeautifulSoup  # type: ignore
 from dateutil import parser as dparser
 from requests import get as rqget  # type: ignore
 from helpers.connection import db  # type: ignore
+import locale
+
+locale.setlocale(locale.LC_ALL, "en_US.UTF-8")
 
 parser = ArgumentParser()
 parser.add_argument("--dev", action="store_true")
@@ -34,11 +37,6 @@ for page_name, page in scrape_tables["tables"].items():
     elif date.isoformat() == tweets["tweets"][page_name]["updated"]:
         print("No date update, aborting")
         continue
-    else:
-        # set new history
-        covid_data["covid_data"]["history"][page_name] = covid_data["covid_data"][
-            "pages"
-        ][page_name]
 
     # set new date and set posted flags to false
     print(
@@ -57,9 +55,9 @@ for page_name, page in scrape_tables["tables"].items():
             table = header.find_next(text=table_header).parent.parent
 
             # format to json
-            covid_data["covid_data"]["pages"][page_name][header] = {
+            covid_data["covid_data"][page_name][header] = {
                 header.text: {
-                    row.find_all(["th", "td"])[0].text: int(
+                    row.find_all(["th", "td"])[0].text: locale.atoi(
                         row.find_all(["th", "td"])[index].text
                     )
                     for row in table.tbody.find_all("tr")

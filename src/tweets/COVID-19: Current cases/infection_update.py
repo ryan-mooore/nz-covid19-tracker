@@ -4,13 +4,13 @@ from typing import Union
 def tweet(data: dict) -> Union[bool, list[str]]:
 
     infected = (
-        data["pages"]["COVID-19: Current cases"]["Current situation"][
-            "Change in last 24 hours"
-        ]["Active"]
-        + data["pages"]["COVID-19: Current cases"]["Current situation"][
+        data["COVID-19: Current cases"]["Current situation"]["Change in last 24 hours"][
+            "Active"
+        ]
+        + data["COVID-19: Current cases"]["Current situation"][
             "Change in last 24 hours"
         ]["Recovered"]
-        + data["pages"]["COVID-19: Current cases"]["Current situation"][
+        + data["COVID-19: Current cases"]["Current situation"][
             "Change in last 24 hours"
         ]["Deceased"]
     )
@@ -19,9 +19,7 @@ def tweet(data: dict) -> Union[bool, list[str]]:
         print("No new active cases in past 24 hours")
         return False
 
-    active = data["pages"]["COVID-19: Current cases"]["Current situation"]["Total"][
-        "Active"
-    ]
+    active = data["COVID-19: Current cases"]["Current situation"]["Total"]["Active"]
 
     return [
         "🦠 INFECTION UPDATE",

@@ -2,12 +2,12 @@ def tweet(data: dict) -> list[str]:
 
     NZ_POP = 5122600
 
-    fully = data["pages"]["COVID-19: Vaccine data"][
-        "COVID-19 vaccinations: daily updates"
-    ]["Vaccinations yesterday"]["Second dose administered"]
-    total = data["pages"]["COVID-19: Vaccine data"][
-        "COVID-19 vaccinations: daily updates"
-    ]["Vaccinations yesterday"]["Total doses administered"]
+    fully = data["COVID-19: Vaccine data"]["COVID-19 vaccinations: daily updates"][
+        "Vaccinations yesterday"
+    ]["Second dose administered"]
+    total = data["COVID-19: Vaccine data"]["COVID-19 vaccinations: daily updates"][
+        "Vaccinations yesterday"
+    ]["Total doses administered"]
 
     return [
         f"💉 DAILY VACCINATIONS",
