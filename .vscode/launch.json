@@ -10,21 +10,36 @@
             "request": "launch",
             "program": "${workspaceFolder}/src/tweet.py",
             "console": "integratedTerminal",
-            "args": ["${input:tweet}", "--dev"]
+            "args": ["${input:tweet}"]
+        },
+        {
+            "name": "Test tweet",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/tweet.py",
+            "console": "integratedTerminal",
+            "args": ["${input:tweet}", "--test"]
+        },
+        {
+            "name": "Force scrape",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/scrape.py",
+            "console": "integratedTerminal",
+            "args": ["--force"]
         },
         {
             "name": "Scrape",
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/src/scrape.py",
-            "console": "integratedTerminal",
-            "args": ["--dev"]
+            "console": "integratedTerminal"
         }
     ],
     "inputs": [
         {
             "id": "tweet",
-            "description": "Select tweet to push",
+            "description": "Type tweet to push",
             "type": "promptString"
         }
     ]

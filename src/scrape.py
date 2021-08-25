@@ -1,7 +1,4 @@
 from argparse import ArgumentParser
-from json import dumps, loads
-from collections import defaultdict
-from pydoc import pager
 from bs4 import BeautifulSoup  # type: ignore
 from dateutil import parser as dparser
 from requests import get as rqget  # type: ignore
@@ -11,14 +8,14 @@ import locale
 locale.setlocale(locale.LC_ALL, "en_US.UTF-8")
 
 parser = ArgumentParser()
-parser.add_argument("--dev", action="store_true")
+parser.add_argument("--force", action="store_true")
 args = parser.parse_args()
 
-scrape_tables = db.scrape_tables.find_one()
+tables = db.scrape_tables.find_one()
 covid_data = db.covid_data.find_one()
 tweets = db.tweet_status.find_one()
 
-for page_name, page in scrape_tables["tables"].items():
+for page_name, page in tables["tables"].items():
     soup = BeautifulSoup(
         rqget(
             f"https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-data-and-statistics/{page['url']}",
@@ -31,12 +28,11 @@ for page_name, page in scrape_tables["tables"].items():
     date = dparser.parse(soup.find("div", {"class": "well well-sm"}).text, fuzzy=True)
     print(f"Found date for {page_name}: {date.isoformat()}")
 
-    if args.dev:
-        print("Skipping data check, dev environment")
     # check data has actually been updated
-    elif date.isoformat() == tweets["tweets"][page_name]["updated"]:
-        print("No date update, aborting")
-        continue
+    if date.isoformat() == tweets["tweets"][page_name]["updated"]:
+        if not args.force:
+            print("No date update, aborting")
+            continue
 
     # set new date and set posted flags to false
     print(

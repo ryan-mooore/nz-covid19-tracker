@@ -13,7 +13,7 @@ api = tp.API(auth)
 
 parser = ArgumentParser()
 parser.add_argument("tweet")
-parser.add_argument("--dev", action="store_true")
+parser.add_argument("--test", action="store_true")
 args = parser.parse_args()
 
 tweets = db.tweet_status.find_one()
@@ -22,14 +22,16 @@ covid_data = db.covid_data.find_one()
 for name, tweet_type in tweets["tweets"].items():
     for script, tweeted in tweet_type["tweeted"].items():
         if script == args.tweet:
-            if tweeted and not args.dev:
-                print(
-                    f"Tried to tweet {script} but already tweeted since last data update."
-                )
-                break
+            if args.test:
+                print("Running test tweet")
             else:
-                tweets["tweets"][name]["tweeted"][script] = True
-            print(f"Tweeting {script}...")
+                if tweeted:
+                    print(f"Tweet already posted since {tweet_type['updated']}")
+                    print("Exiting")
+                    break
+                else:
+                    print("Tweeting to status")
+
             try:
                 status = "\n".join(
                     import_module(".".join(["tweets", name, script])).tweet(
@@ -37,17 +39,21 @@ for name, tweet_type in tweets["tweets"].items():
                     )
                 )
             except TypeError:
-                print(f"Aborted tweeting {script}...")
+                print(f"Exiting")
                 break
 
-            print(f"Tweeted: \n{status}")
-            if not args.dev:
+            if args.test:
+                print(f"Test tweet: \n{status}")
+            else:
+                # set tweeted to true
                 api.update_status(status)
+                tweets["tweets"][name]["tweeted"][script] = True
+                print(f"Tweeted: \n{status}")
             break
     else:
         continue
     break
 else:
-    print(f"Tweet {argv[1]} could not be found in status.json")
+    print(f"Tweet {args.tweet} could not be found in status.json")
 
 db.tweet_status.update_one({"_id": tweets["_id"]}, {"$set": tweets})
