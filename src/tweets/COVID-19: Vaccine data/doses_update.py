@@ -1,5 +1,4 @@
-from math import floor, ceil
-from re import A
+from math import floor
 
 
 def tweet(data: dict) -> list[str]:
@@ -9,13 +8,14 @@ def tweet(data: dict) -> list[str]:
         "COVID-19 vaccinations: daily updates"
     ]["Cumulative total"]
 
-    only_first = vaccinations["First dose administered"]
-    any_dose = vaccinations["Total doses administered"]
+    at_least_one = vaccinations["First dose administered"]
     vaccinated = vaccinations["Second dose administered"]
 
-    tiles = "🟨" * floor(vaccinated / NZ_POP * 25) + "⬜" * (
-        floor(any_dose / NZ_POP * 25) - floor(vaccinated / NZ_POP * 25)
-    )
+    # "Second dose administered" gives vaccinated people. Taking this away from "First dose
+    # administered" gives people that have had only 1 dose.
+    only_one = at_least_one - vaccinated
+
+    tiles = "🟨" * floor(vaccinated / NZ_POP * 25) + "⬜" * floor(only_one / NZ_POP * 25)
 
     for tile in range(len(tiles), 25):
         tiles += "⬛"
@@ -24,6 +24,6 @@ def tweet(data: dict) -> list[str]:
 
     return [
         f"💉 DOSES UPDATE",
-        f"{round(any_dose / NZ_POP * 100, 2)}% of people have had at least 1 dose.",
-        f"{round(vaccinated / any_dose * 100, 2)}% of people that have been jabbed are fully vaccinated.",
+        f"{round(at_least_one / NZ_POP * 100, 2)}% of people have had at least 1 dose.",
+        f"{round(vaccinated / (vaccinated + only_one) * 100, 2)}% of people that have been jabbed are fully vaccinated.",
     ] + grid
