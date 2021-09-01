@@ -1,4 +1,5 @@
 from argparse import ArgumentParser
+from typing import Union
 from bs4 import BeautifulSoup  # type: ignore
 from dateutil import parser as dparser
 from requests import get as rqget  # type: ignore
@@ -14,6 +15,17 @@ args = parser.parse_args()
 tables = db.scrape_tables.find_one()
 covid_data = db.covid_data.find_one()
 tweets = db.tweet_status.find_one()
+
+
+def parse_value(value: str) -> Union[float, int, None]:
+    if value:
+        if "%" in value:
+            return locale.atof(value[:-1])
+        else:
+            return locale.atoi(value)
+    else:
+        return None
+
 
 for page_name, page in tables["tables"].items():
     soup = BeautifulSoup(
@@ -53,9 +65,11 @@ for page_name, page in tables["tables"].items():
             # format to json
             covid_data["covid_data"][page_name][header] = {
                 header.text: {
-                    row.find_all(["th", "td"])[0].text: locale.atoi(
+                    row.find_all(["th", "td"])[0].text: parse_value(
                         row.find_all(["th", "td"])[index].text
                     )
+                    if len(row.find_all(["th", "td"])) > index
+                    else None
                     for row in table.tbody.find_all("tr")
                 }
                 for index, header in enumerate(table.thead.find_all("th")[1:], start=1)
