@@ -4,10 +4,10 @@ def tweet(data: dict) -> list[str]:
 
     vaccinated = data["COVID-19: Vaccine data"]["COVID-19 vaccinations: daily updates"][
         "Vaccinations yesterday"
-    ]["Second dose administered"]
+    ]["Second dose"]
     any_dose = data["COVID-19: Vaccine data"]["COVID-19 vaccinations: daily updates"][
         "Vaccinations yesterday"
-    ]["Total doses administered"]
+    ]["Total doses"]
 
     return [
         f"💉 DAILY VACCINATIONS",

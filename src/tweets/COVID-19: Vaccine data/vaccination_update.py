@@ -7,7 +7,7 @@ def tweet(data: dict) -> list[str]:
     vaccinated = int(
         data["COVID-19: Vaccine data"]["COVID-19 vaccinations: daily updates"][
             "Cumulative total"
-        ]["Second dose administered"]
+        ]["Second dose"]
     )
     ratio = vaccinated / NZ_POP
     low = floor(ratio * 10) / 10

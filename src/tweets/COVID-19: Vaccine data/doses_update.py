@@ -8,10 +8,10 @@ def tweet(data: dict) -> list[str]:
         "COVID-19 vaccinations: daily updates"
     ]["Cumulative total"]
 
-    at_least_one = vaccinations["First dose administered"]
-    vaccinated = vaccinations["Second dose administered"]
+    at_least_one = vaccinations["First dose"]
+    vaccinated = vaccinations["Second dose"]
 
-    # "Second dose administered" gives vaccinated people. Taking this away from "First dose
+    # "Second dose" gives vaccinated people. Taking this away from "First dose
     # administered" gives people that have had only 1 dose.
     only_one = at_least_one - vaccinated
 
