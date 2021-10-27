@@ -17,15 +17,15 @@ def tweet(covid_data: dict, population) -> list[str]:
 
     vaccinated_bar_macro = "🟨" * floor((ratio - low) * 100)
     unvaccinated_bar_macro = "⬛" * ceil((high - ratio) * 100)
-    macro_lower = int(low * 100)
-    macro_lower = int(high * 100)
+    lower_macro = int(low * 100)
+    upper_macro = int(high * 100)
     vaccinated_bar_total = "🟨" * floor(ratio * 10)
     unvaccinated_bar_total = "⬛" * ceil((1 - ratio) * 10)
 
     return [
         "💉 VACCINATION UPDATE",
         f"(eligible) New Zealand is now {round(ratio * 100, 2)}% vaccinated!",
-        f"{macro_lower}% {vaccinated_bar_macro}"
-        f"{unvaccinated_bar_macro} {macro_lower}%",
+        f"{lower_macro}% {vaccinated_bar_macro}"
+        f"{unvaccinated_bar_macro} {upper_macro}%",
         f"0% {vaccinated_bar_total}{unvaccinated_bar_total} 100%",
     ]
