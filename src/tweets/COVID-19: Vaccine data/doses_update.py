@@ -1,29 +1,45 @@
+"""Tweets a graph of first and second doses relative to the NZ population."""
+
 from math import floor
 
+TOTAL_TILES = 25
 
-def tweet(data: dict) -> list[str]:
-    NZ_POP = 5122600
 
-    vaccinations = data["COVID-19: Vaccine data"][
-        "COVID-19 vaccinations: daily updates"
-    ]["Cumulative total"]
+def tweet(covid_data: dict, population) -> list[str]:
 
-    at_least_one = vaccinations["First dose"]
+    vaccinations = (covid_data
+                    ["COVID-19: Vaccine data"]
+                    ["COVID-19 vaccinations: daily updates"]
+                    ["Cumulative total"]
+                    )
+
+    least_one = vaccinations["First dose"]
     vaccinated = vaccinations["Second dose"]
 
     # "Second dose" gives vaccinated people. Taking this away from "First dose
     # administered" gives people that have had only 1 dose.
-    only_one = at_least_one - vaccinated
+    only_one = least_one - vaccinated
 
-    tiles = "🟨" * floor(vaccinated / NZ_POP * 25) + "⬜" * floor(only_one / NZ_POP * 25)
+    tiles_vaccinated = "🟨" * floor(
+        vaccinated / population.ELIGIBLE.value * TOTAL_TILES,
+    )
+    tiles_first_dose = "⬜" * floor(
+        only_one / population.ELIGIBLE.value * TOTAL_TILES,
+    )
 
-    for tile in range(len(tiles), 25):
-        tiles += "⬛"
+    tiles = tiles_vaccinated + tiles_first_dose
+    tiles += "".join(["⬛" * (TOTAL_TILES - len(tiles))])
 
-    grid = [tiles[index : index + 5] for index in range(0, len(tiles), 5)]
+    grid = [
+        tiles[
+            index: index + 5
+        ] for index in range(0, len(tiles), 5)
+    ]
 
     return [
-        f"💉 DOSES UPDATE",
-        f"{round(at_least_one / NZ_POP * 100, 2)}% of people have had at least 1 dose.",
-        f"{round(vaccinated / (vaccinated + only_one) * 100, 2)}% of people that have been jabbed are fully vaccinated.",
+        "💉 DOSES UPDATE",
+        f"(eligible) {round(least_one / population.ELIGIBLE.value * 100, 2)}% "
+        "of people have had at least 1 dose",
+        f"(eligible) {round(only_one / population.ELIGIBLE.value * 100, 2)}% "
+        "of people have had only 1 dose",
     ] + grid

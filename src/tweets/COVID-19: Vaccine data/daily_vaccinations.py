@@ -1,16 +1,24 @@
-def tweet(data: dict) -> list[str]:
+"""Tweets the amount of new vaccinations in the last 24 hours."""
 
-    NZ_POP = 5122600
 
-    vaccinated = data["COVID-19: Vaccine data"]["COVID-19 vaccinations: daily updates"][
-        "Vaccinations yesterday"
-    ]["Second dose"]
-    any_dose = data["COVID-19: Vaccine data"]["COVID-19 vaccinations: daily updates"][
-        "Vaccinations yesterday"
-    ]["Total doses"]
+def tweet(covid_data: dict, population) -> list[str]:
+
+    vaccinated = (covid_data
+                  ["COVID-19: Vaccine data"]
+                  ["COVID-19 vaccinations: daily updates"]
+                  ["Vaccinations yesterday"]
+                  ["Second dose"]
+                  )
+
+    any_dose = (covid_data
+                ["COVID-19: Vaccine data"]
+                ["COVID-19 vaccinations: daily updates"]
+                ["Vaccinations yesterday"]
+                ["Total doses"]
+                )
 
     return [
-        f"💉 DAILY VACCINATIONS",
+        "💉 DAILY VACCINATIONS",
         f"{any_dose} people were given the jab today.",
         f"{vaccinated} more people are now fully vaccinated!",
     ]

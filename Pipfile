@@ -11,10 +11,9 @@ tweepy = "*"
 pymongo = {extras = ["srv"], version = "*"}
 
 [dev-packages]
-pycodestyle = "*"
 types-python-dateutil = "*"
 mypy = "*"
-black = "*"
+wemake-python-styleguide = "*"
 
 [requires]
 python_version = "3.9"
