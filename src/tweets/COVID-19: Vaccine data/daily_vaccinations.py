@@ -19,6 +19,6 @@ def tweet(covid_data: dict, population) -> list[str]:
 
     return [
         "💉 DAILY VACCINATIONS",
-        f"{any_dose} people were given the jab today.",
-        f"{vaccinated} more people are now fully vaccinated!",
+        f"{any_dose:,} people were given the jab today.",
+        f"{vaccinated:,} more people are now fully vaccinated!",
     ]

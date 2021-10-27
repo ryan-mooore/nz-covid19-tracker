@@ -29,5 +29,6 @@ def tweet(covid_data: dict, population) -> Union[bool, list[str]]:
         str(recovered) + conjunction + (
             "recovered from COVID-19 in the past 24 hours, "
             "bringing the total active cases to "
-        ) + str(active),
+            f"{active:,}"
+        ),
     ]
