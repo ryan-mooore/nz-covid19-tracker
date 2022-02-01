@@ -5,7 +5,7 @@ def tweet(covid_data: dict, population) -> list[str]:
 
     totals = (covid_data
               ["COVID-19: Current cases"]
-              ["Case details"]
+              ["Source of active cases"]
               ["Total at present"]
               )
 
@@ -40,9 +40,9 @@ def tweet(covid_data: dict, population) -> list[str]:
 
     active = (covid_data
               ["COVID-19: Current cases"]
-              ["Current situation"]
-              ["Total"]
-              ["Active"]
+              ["Number of active cases"]
+              ["Total at present"]
+              ["Confirmed"]
               )
 
     return [

@@ -6,7 +6,7 @@ def tweet(covid_data: dict, population) -> Union[bool, list[str]]:
 
     recovered = (covid_data
                  ["COVID-19: Current cases"]
-                 ["Current situation"]
+                 ["All case outcomes since first New Zealand case"]
                  ["Change in last 24 hours"]
                  ["Recovered"]
                  )
@@ -17,9 +17,9 @@ def tweet(covid_data: dict, population) -> Union[bool, list[str]]:
 
     active = (covid_data
               ["COVID-19: Current cases"]
-              ["Current situation"]
-              ["Total"]
-              ["Active"]
+              ["Number of active cases"]
+              ["Total at present"]
+              ["Confirmed"]
               )
 
     conjunction = " people have " if recovered > 1 else " person has "
