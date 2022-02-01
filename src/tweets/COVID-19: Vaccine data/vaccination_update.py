@@ -4,13 +4,18 @@ from math import ceil, floor
 
 def tweet(covid_data: dict, population) -> list[str]:
 
-    vaccinated = int((
-        covid_data
-        ["COVID-19: Vaccine data"]
-        ["COVID-19 vaccinations: daily updates"]
-        ["Cumulative total"]
-        ["Second dose"]
-    ))
+    twelve_plus = (covid_data["COVID-19: Vaccine data"]
+                   ["Total Vaccinations 12+"]
+                   ["Cumulative total"]
+                   )
+    five_to_eleven = (covid_data["COVID-19: Vaccine data"]
+                      ["Total Vaccinations 5-11"]
+                      ["Cumulative total"]
+                      )
+
+    # vaccinated = twelve_plus["Second dose"] + five_to_eleven["Second dose"]
+    vaccinated = twelve_plus["Second dose"] + 0
+
     ratio = vaccinated / population.ELIGIBLE.value
     low = floor(ratio * 10) / 10
     high = ceil(ratio * 10) / 10
@@ -24,7 +29,7 @@ def tweet(covid_data: dict, population) -> list[str]:
 
     return [
         "💉 VACCINATION UPDATE",
-        f"(eligible) New Zealand is now {round(ratio * 100, 2)}% vaccinated!",
+        f"(5+) New Zealand is now {round(ratio * 100, 2)}% vaccinated!",
         f"{lower_macro}% {vaccinated_bar_macro}"
         f"{unvaccinated_bar_macro} {upper_macro}%",
         f"0% {vaccinated_bar_total}{unvaccinated_bar_total} 100%",

@@ -71,14 +71,21 @@ for page_name, page in tables["tables"].items():
         print(f"Scraping {header}")
 
         # find section header
-        header = soup.find(text=header)
+        header_element = soup.find(text=header)
         for table_header in page_tables:
             # find table header
-            table = header.find_next(text=table_header).parent.parent
+            table_header_element = header_element.find_next(text=table_header)
+
+            # fix inconsistencies between header types on different pages
+            if table_header_element.parent.parent.name == "table":
+                table = table_header_element.parent.parent
+            else:
+                table = table_header_element.parent.find_next("table")
+
             headings = table.thead.find_all("th")[1:]
 
             # format to json
-            covid_data["covid_data"][page_name][header] = {
+            covid_data["covid_data"][page_name][table_header] = {
                 header.text: {
                     row.find_all(table_cells)[0].text: _parse_number(
                         row.find_all(table_cells)[index].text,

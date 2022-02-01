@@ -29,6 +29,8 @@ class Population(Enum):
     # taken from
     # https://www.health.govt.nz/our-work/diseases-and-conditions/covid-19-novel-coronavirus/covid-19-data-and-statistics/covid-19-vaccine-data#details-of-vaccine-data
     # (https://www.health.govt.nz/system/files/documents/pages/covid_vaccinations_26_10_2021.xlsx)
+    TWELVE_PLUS = 4209057
+    FIVE_ELEVEN = 476294
     ELIGIBLE = (4209057 + 476294)  # population + 5-11 population
 
 
