@@ -1,3 +1,5 @@
+NOTE: As of the end of 2022, this repository has been archived due to Heroku no longer supporting free dynos, as well as NZ returning to normality.
+
 # nz-covid19-tracker
 [nz-covid-tracker](https://twitter.com/covid19_nz) is a Twitter bot tweeting updates to both COVID-19 vaccination and cases status in New Zealand. It operates using a couple of simple python scripts and a mongoDB database. The database simply stores the last data and date update on the website to check whether new data has been posted or not.
 
